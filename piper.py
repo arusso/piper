@@ -16,38 +16,42 @@ class Piper:
         """
         Takes a command line, runs it and returns the stdout
         """
-        # first, lets take apart the pipe
+
+        # first, tokenize based on shell syntax using shlex.split()
         tokens=split(line)
+       
+        # now lets create our separate statements based on when we find a |
         statement=0
         cmds = []
         cmds.append("")
         for token in tokens:
-            # add the tokens to the current statement until we reach a |
-            
             if token == "|":
                 cmds.append("")
                 statement+=1
             else:
                 if cmds[statement]!="":cmds[statement]+=","
                 cmds[statement]+=token
-        #print cmds
 
-        # get ready to do the "real" work
-        idx=0
-        processes=[]
+
+
+
+        # build the initial processes.  only difference is we dont link the
+        # stdin for the inital processes
+        idx=0  # idx of process object
+        processes=[] # process list
         processes.append(Popen(cmds[0].split(','),stdout=PIPE))
 
-        # build our processes, then link the previous stdout with the current stdin
+        # build remaining processes, linking the stdin/outs        
         for cmd in cmds[1:]:
-            processes.append(Popen(cmd.split(','),stdin=processes[idx].stdout,stdout=PIPE))
-            idx+=1
-
+            processes.append(
+                Popen(cmd.split(','),stdin=processes[idx].stdout,stdout=PIPE))
+            idx+=1  # increment the process index
             
         # return stdout from the final process we ran
         return processes[-1].communicate()[0]
 
 if __name__=="__main__":
-    line="lsof -T"
+    line="lsof -T | grep path\ inode= | cut -d ' ' -f 1 | sort -u"
     print "testing run(line) function with line=\""+line+"\""
     p=Piper()
     out=p.run(line)
