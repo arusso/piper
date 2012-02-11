@@ -1,0 +1,30 @@
+= Short Description =
+
+Piper is a simple library for python that allows you to easily executed piped
+shell statements, and retrieve the output.
+
+Actually, it doesn't do much but generate the Popen() statements for you, link
+the stdin/stdout and return the output for you.  
+
+As an example, the following statements are all equivalent:
+
+
+Shell:
+```Shell
+lsof -T | grep inode | cut -d ' ' -f 1 | sort -u
+```
+
+Python:
+```Python
+p1=Popen(['lsof','T'],stdout=PIPE)
+p2=Popen(['grep','inode'],stdin=p1.stdout,stdout=PIPE)
+p3=Popen(['cut','-d',' ','-f','1'],stdin=p2.stdout,stdout=PIPE)
+p4=Popen(['sort','-u'],stdin=p3.stdout,stdout=PIPE)
+print p4.communicate()[0],
+```
+
+Python w/Piper:
+```Python
+p=Piper()
+print p.run("lsof -T | grep inode | cut -d ' ' -f 1 | sort -u")
+```
