@@ -41,6 +41,7 @@ class Piper:
         for cmd in cmds[1:]:
             processes.append(Popen(cmd.split(','),stdin=processes[idx].stdout,stdout=PIPE))
             idx+=1
+
             
         # return stdout from the final process we ran
         return processes[-1].communicate()[0]
