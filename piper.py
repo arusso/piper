@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+# author: arusso@berkeley.edu
+# date:   09-Feb-2012
+# purpose: small library to help clean up the code needed to run shell commands
+#          and retrieve the output in python
+
 from subprocess import Popen,PIPE
 from shlex import split
 
