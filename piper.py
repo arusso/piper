@@ -1,4 +1,9 @@
-#!/usr/bin/python
+"""
+Piper is a simple module used to easily execute shell commands, including those
+with a PIPE '|', without having to concern ourselves with connecting the the
+subprocesses togther in order for communication to pass back needed
+results.
+"""
 
 # author: arusso@berkeley.edu
 # date:   09-Feb-2012
@@ -9,7 +14,10 @@ from subprocess import Popen,PIPE
 from shlex import split
 
 class Piper:
-    """Piper takes a shell statement, including with a PIPE, executes the statement and returns the data, taking advantage of the subprocess module."""
+    """
+    Piper takes a shell statement, including those with a PIPE, executes the 
+    statement and returns the data, taking advantage of the subprocess module.
+    """
 
     
     def run(self,line):
